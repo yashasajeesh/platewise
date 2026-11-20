@@ -1,0 +1,32 @@
+{
+  "name": "platewise-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PlateWise - AI Nutrition & Food Analysis Monorepo (Frontend on Vercel, Backend on Render)",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "bun run --cwd frontend dev",
+    "dev:frontend": "bun run --cwd frontend dev",
+    "dev:backend": "bun run --cwd backend dev",
+    "build": "bun run build:backend && bun run build:frontend",
+    "build:frontend": "bun run --cwd frontend build",
+    "build:backend": "bun run --cwd backend build",
+    "test": "bun run test:backend && bun run test:frontend",
+    "test:frontend": "bun run --cwd frontend test",
+    "test:backend": "bun run --cwd backend test",
+    "start:backend": "bun run --cwd backend start"
+  },
+  "keywords": [
+    "platewise",
+    "nutrition",
+    "gemini",
+    "ai",
+    "macro-tracking",
+    "food-scanner"
+  ],
+  "author": "PlateWise Team",
+  "license": "MIT"
+}

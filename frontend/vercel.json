@@ -1,0 +1,11 @@
+{
+  "framework": "vite",
+  "buildCommand": "bun run build:vercel || bun run build",
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
+}

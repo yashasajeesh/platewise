@@ -1,0 +1,286 @@
+/*
+ * Tailwind v4 entry: config lives here, with no tailwind.config.js or PostCSS plugin.
+ * - Keep every @import in this top block, above @theme and the rest of the file. Install an
+ *   npm package before @importing its CSS. Never @import a remote URL (web fonts, CDN CSS): the
+ *   build resolves @import from the filesystem. Load those with a <link> in the head() of
+ *   src/routes/__root.tsx and name the family in a --font-* token in @theme inline below.
+ */
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system definition.
+ *
+ * The design lives in this file: oklch color tokens on the shadcn variables
+ * (--background, --foreground, --primary, --secondary, --muted, --accent, ...) plus
+ * new tokens as needed, font tokens, and custom styles and animations.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-protein: var(--protein);
+  --color-carbohydrate: var(--carbohydrate);
+  --color-fat: var(--fat);
+  --color-fiber: var(--fiber);
+  --color-sodium: var(--sodium);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.5rem;
+  --background: oklch(0.978 0.009 153);
+  --foreground: oklch(0.23 0.025 166);
+  --card: oklch(0.998 0.002 150);
+  --card-foreground: oklch(0.23 0.025 166);
+  --popover: oklch(0.998 0.002 150);
+  --popover-foreground: oklch(0.23 0.025 166);
+  --primary: oklch(0.48 0.125 158);
+  --primary-foreground: oklch(0.99 0.004 153);
+  --secondary: oklch(0.94 0.022 152);
+  --secondary-foreground: oklch(0.32 0.06 163);
+  --muted: oklch(0.95 0.012 158);
+  --muted-foreground: oklch(0.53 0.03 166);
+  --accent: oklch(0.92 0.045 153);
+  --accent-foreground: oklch(0.3 0.075 163);
+  --destructive: oklch(0.59 0.19 24);
+  --destructive-foreground: oklch(0.99 0.004 153);
+  --border: oklch(0.89 0.018 157);
+  --input: oklch(0.89 0.018 157);
+  --ring: oklch(0.59 0.12 158);
+  --chart-1: oklch(0.56 0.14 157);
+  --chart-2: oklch(0.69 0.15 52);
+  --chart-3: oklch(0.62 0.11 222);
+  --chart-4: oklch(0.72 0.13 25);
+  --chart-5: oklch(0.67 0.12 103);
+  --protein: oklch(0.55 0.14 157);
+  --carbohydrate: oklch(0.7 0.15 54);
+  --fat: oklch(0.64 0.13 24);
+  --fiber: oklch(0.59 0.11 220);
+  --sodium: oklch(0.57 0.08 277);
+  --success: oklch(0.94 0.04 153);
+  --success-foreground: oklch(0.39 0.1 157);
+  --sidebar: oklch(0.97 0.012 153);
+  --sidebar-foreground: oklch(0.23 0.025 166);
+  --sidebar-primary: oklch(0.48 0.125 158);
+  --sidebar-primary-foreground: oklch(0.99 0.004 153);
+  --sidebar-accent: oklch(0.92 0.045 153);
+  --sidebar-accent-foreground: oklch(0.3 0.075 163);
+  --sidebar-border: oklch(0.89 0.018 157);
+  --sidebar-ring: oklch(0.59 0.12 158);
+}
+
+.dark {
+  --background: oklch(0.18 0.018 164);
+  --foreground: oklch(0.96 0.008 153);
+  --card: oklch(0.23 0.02 164);
+  --card-foreground: oklch(0.96 0.008 153);
+  --popover: oklch(0.23 0.02 164);
+  --popover-foreground: oklch(0.96 0.008 153);
+  --primary: oklch(0.7 0.13 153);
+  --primary-foreground: oklch(0.2 0.03 164);
+  --secondary: oklch(0.29 0.025 164);
+  --secondary-foreground: oklch(0.92 0.02 153);
+  --muted: oklch(0.29 0.025 164);
+  --muted-foreground: oklch(0.72 0.025 160);
+  --accent: oklch(0.32 0.04 157);
+  --accent-foreground: oklch(0.92 0.02 153);
+  --destructive: oklch(0.68 0.16 24);
+  --destructive-foreground: oklch(0.98 0.01 153);
+  --border: oklch(0.35 0.022 164);
+  --input: oklch(0.35 0.022 164);
+  --ring: oklch(0.68 0.1 153);
+  --chart-1: oklch(0.7 0.13 153);
+  --chart-2: oklch(0.76 0.13 52);
+  --chart-3: oklch(0.73 0.1 222);
+  --chart-4: oklch(0.72 0.12 24);
+  --chart-5: oklch(0.76 0.11 103);
+  --protein: oklch(0.7 0.13 153);
+  --carbohydrate: oklch(0.76 0.13 52);
+  --fat: oklch(0.72 0.12 24);
+  --fiber: oklch(0.73 0.1 222);
+  --sodium: oklch(0.73 0.08 277);
+  --success: oklch(0.29 0.04 153);
+  --success-foreground: oklch(0.82 0.09 153);
+  --sidebar: oklch(0.23 0.02 164);
+  --sidebar-foreground: oklch(0.96 0.008 153);
+  --sidebar-primary: oklch(0.7 0.13 153);
+  --sidebar-primary-foreground: oklch(0.2 0.03 164);
+  --sidebar-accent: oklch(0.32 0.04 157);
+  --sidebar-accent-foreground: oklch(0.92 0.02 153);
+  --sidebar-border: oklch(0.35 0.022 164);
+  --sidebar-ring: oklch(0.68 0.1 153);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+}
+
+.page-shell {
+  width: min(100% - 3rem, 1380px);
+  margin-inline: auto;
+}
+
+.brand-mark {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: 0.5rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.image-frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1.3;
+  border-radius: 0.5rem;
+  background: var(--muted);
+}
+
+.image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
+  border-radius: 999px;
+  padding: 0.42rem 0.7rem;
+  background: color-mix(in oklab, var(--card) 93%, transparent);
+  color: var(--foreground);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.calorie-disc {
+  display: grid;
+  width: 4.25rem;
+  height: 4.25rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--success);
+  color: var(--success-foreground);
+}
+
+.nutrition-tile {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--card);
+  padding: 0.85rem;
+}
+
+.food-dot {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--food-tint, var(--secondary));
+  color: var(--food-color, var(--primary));
+}
+
+.scan-skeleton {
+  animation: scan-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes scan-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-shell {
+    width: min(100% - 1.5rem, 1380px);
+  }
+
+  .image-frame {
+    aspect-ratio: 1.05;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
