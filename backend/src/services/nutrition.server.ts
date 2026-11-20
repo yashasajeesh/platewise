@@ -143,12 +143,15 @@ export async function analyzeNutritionPhoto(imageDataUrl: string) {
 
   const { mimeType, base64Data } = imageData;
 
-  const preferredModel = process.env["GEMINI_MODEL"] || "gemini-3.5-flash";
+  const preferredModel = process.env["GEMINI_MODEL"] || "gemini-3.5-flash-lite";
   const candidateModels = [
     preferredModel,
+    "gemini-3.5-flash-lite",
+    "gemini-3.1-flash-lite",
     "gemini-3.5-flash",
+    "gemini-3.6-flash",
     "gemini-3.8-flash",
-    "gemini-2.5-flash",
+    "gemini-3.7-flash",
   ].filter((model, idx, arr) => arr.indexOf(model) === idx);
 
   const ai = new GoogleGenAI({ apiKey });
@@ -189,14 +192,23 @@ export async function analyzeNutritionPhoto(imageDataUrl: string) {
       }
     } catch (err: unknown) {
       lastError = err;
-      const errStr = String(err);
-      // Auto-fallback if model is unavailable or rate-limited
+      const errStr = String(err).toLowerCase();
+      // Auto-fallback if model is unavailable, overloaded, or rate-limited/quota-exhausted
       if (
         errStr.includes("404") ||
-        errStr.includes("NOT_FOUND") ||
+        errStr.includes("not_found") ||
         errStr.includes("503") ||
-        errStr.includes("UNAVAILABLE")
+        errStr.includes("unavailable") ||
+        errStr.includes("429") ||
+        errStr.includes("resource_exhausted") ||
+        errStr.includes("quota") ||
+        errStr.includes("rate-limit") ||
+        errStr.includes("rate_limit") ||
+        errStr.includes("high demand")
       ) {
+        console.warn(
+          `[Platewise AI] Model "${model}" unavailable or quota exceeded. Falling back to next candidate...`,
+        );
         continue;
       }
       break;
@@ -206,7 +218,17 @@ export async function analyzeNutritionPhoto(imageDataUrl: string) {
   if (!content) {
     console.error("Nutrition analysis error:", lastError);
     if (lastError instanceof Error) {
-      throw new Error(`AI analysis failed: ${lastError.message}`);
+      const msg = lastError.message;
+      if (
+        msg.includes("429") ||
+        msg.includes("RESOURCE_EXHAUSTED") ||
+        msg.toLowerCase().includes("quota")
+      ) {
+        throw new Error(
+          "Gemini Free Tier daily quota exceeded across all available models. Please retry in a few hours or configure a paid Gemini API key.",
+        );
+      }
+      throw new Error(`AI analysis failed: ${msg}`);
     }
     throw new Error("The image analysis returned no readable result.");
   }
